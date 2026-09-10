@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" data-theme="blue-slate">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لابراتوار عکس آفرنگ | Afrang Photo Lab</title>
+<style>
+:root{--radius:14px;--transition:all .3s ease;}
+[data-theme="blue-slate"]{
+  --bg:#0f172a;--bg2:#1e293b;--card:#1e293b;--text:#e2e8f0;--muted:#94a3b8;
+  --primary:#3b82f6;--primary2:#6366f1;--border:#334155;--input-bg:#0f172a;
+  --shadow:0 4px 20px rgba(0,0,0,.4);}
+[data-theme="crimson-cream"]{
+  --bg:#fdf6ec;--bg2:#fffaf2;--card:#fffdf8;--text:#3b2f2f;--muted:#8a7466;
+  --primary:#dc2626;--primary2:#b91c1c;--border:#eadfce;--input-bg:#ffffff;
+  --shadow:0 4px 20px rgba(180,60,60,.15);}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Vazirmatn',Tahoma,sans-serif;}
+body{background:var(--bg);color:var(--text);transition:var(--transition);min-height:100vh;}
+a{color:inherit;text-decoration:none;}
+header{position:sticky;top:0;z-index:100;background:var(--bg2);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;padding:12px 20px;flex-wrap:wrap;gap:10px;}
+.logo{font-weight:800;font-size:1.1rem;display:flex;align-items:center;gap:8px;}
+.logo span{color:var(--primary);}
+nav{display:flex;gap:16px;flex-wrap:wrap;}
+nav a{color:var(--muted);font-size:.95rem;padding:6px 4px;border-bottom:2px solid transparent;}
+nav a:hover{color:var(--primary);border-color:var(--primary);}
+.header-actions{display:flex;gap:8px;}
+button,.btn{cursor:pointer;border:none;border-radius:var(--radius);padding:10px 18px;font-size:.95rem;
+  background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;transition:var(--transition);font-family:inherit;}
+button:hover,.btn:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(59,130,246,.35);}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text);}
+.btn-outline:hover{border-color:var(--primary);color:var(--primary);box-shadow:none;}
+main{max-width:1100px;margin:0 auto;padding:24px 20px;}
+section{margin-bottom:48px;}
+h2{font-size:1.5rem;margin-bottom:18px;color:var(--primary);}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);}
+.hero{text-align:center;padding:70px 20px;background:linear-gradient(135deg,rgba(59,130,246,.12),rgba(99,102,241,.12));border-radius:var(--radius);}
+.hero h1{font-size:2.2rem;margin-bottom:14px;}
+.hero p{color:var(--muted);margin-bottom:24px;font-size:1.05rem;}
+.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;}
+label{display:block;font-size:.9rem;margin-bottom:6px;color:var(--muted);}
+input,select,textarea{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--border);
+  background:var(--input-bg);color:var(--text);font-family:inherit;font-size:.95rem;}
+input:focus,select:focus{outline:none;border-color:var(--primary);}
+.chips{display:flex;gap:8px;flex-wrap:wrap;}
+.chip{padding:8px 14px;border-radius:999px;border:1px solid var(--border);cursor:pointer;font-size:.85rem;}
+.chip.active{background:var(--primary);color:#fff;border-color:var(--primary);}
+.progress-wrap{background:var(--input-bg);border-radius:999px;height:12px;overflow:hidden;margin-top:14px;display:none;}
+.progress-bar{height:100%;width:0;background:linear-gradient(90deg,var(--primary),var(--primary2));transition:width .3s;}
+#orderMsg,#trackMsg{margin-top:12px;font-size:.9rem;min-height:20px;}
+.track-result{margin-top:16px;display:none;}
+.status-badge{display:inline-block;padding:4px 12px;border-radius:999px;font-size:.8rem;background:var(--primary);color:#fff;}
+.gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;}
+.gallery-item{border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);background:var(--card);}
+.gallery-item img{width:100%;height:180px;object-fit:cover;display:block;}
+.contact-list{display:grid;gap:10px;}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;align-items:center;justify-content:center;padding:20px;}
+.modal.open{display:flex;}
+.modal-content{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:28px;width:100%;max-width:420px;position:relative;box-shadow:var(--shadow);}
+.modal-close{position:absolute;top:10px;left:12px;background:transparent;color:var(--muted);font-size:1.3rem;padding:4px;}
+.modal-content h3{margin-bottom:16px;color:var(--primary);}
+#adminDashboard{display:none;}
+.tabs{display:flex;gap:8px;margin-bottom:18px;border-bottom:1px solid var(--border);}
+.tab-btn{background:transparent;color:var(--muted);border-radius:0;padding:10px 18px;border-bottom:2px solid transparent;}
+.tab-btn.active{color:var(--primary);border-color:var(--primary);}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+.order-row{border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:12px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;}
+.order-row .info{flex:1;min-width:180px;font-size:.9rem;}
+.order-row .info small{color:var(--muted);display:block;margin-top:4px;}
+select.status-select{width:auto;padding:6px 10px;font-size:.85rem;}
+footer{text-align:center;color:var(--muted);padding:24px;border-top:1px solid var(--border);font-size:.85rem;}
+@media(max-width:640px){
+  .hero h1{font-size:1.6rem;}
+  nav{order:3;width:100%;justify-content:center;}
+  .order-row{flex-direction:column;align-items:stretch;}
+}
+[dir="ltr"] body{font-family:Arial,sans-serif;}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="logo">📷 <span>لابراتوار عکس آفرنگ</span> | Afrang Photo Lab</div>
+  <nav>
+    <a href="#order" data-i18n="navOrder">سفارش چاپ</a>
+    <a href="#tracking" data-i18n="navTrack">رهگیری سفارش</a>
+    <a href="#gallery" data-i18n="navGallery">گالری</a>
+    <a href="#contact" data-i18n="navContact">تماس با ما</a>
+  </nav>
+  <div class="header-actions">
+    <button id="themeBtn" class="btn-outline" title="Theme">🎨 دکمه تغییر تم</button>
+    <button id="langBtn" class="btn-outline" title="Language">🌐 دکمه تغییر زبان</button>
+    <button id="adminBtn" class="btn-outline" title="Admin">🔐 دکمه پنل مدیریت</button>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <h1 data-i18n="heroTitle">چاپ عکس حرفه‌ای، با کیفیت آرشیوی</h1>
+    <p data-i18n="heroSub">سفارش آنلاین چاپ عکس روی کاغذهای Silk، Luster، Glossy و Metallic با ارسال سریع</p>
+    <a href="#order" class="btn" data-i18n="heroCta">همین حالا سفارش بده</a>
+  </section>
+
+  <section id="order">
+    <h2 data-i18n="orderTitle">ثبت سفارش چاپ</h2>
+    <div class="card">
+      <div class="form-grid">
+        <div>
+          <label data-i18n="fullName">نام و نام خانوادگی</label>
+          <input type="text" id="custName" required>
+        </div>
+        <div>
+          <label data-i18n="phone">شماره تماس</label>
+          <input type="tel" id="custPhone" required>
+        </div>
+        <div>
+          <label data-i18n="paperType">نوع کاغذ</label>
+          <select id="paperType">
+            <option value="Silk">Silk</option>
+            <option value="Luster">Luster</option>
+            <option value="Glossy">Glossy</option>
+            <option value="Metallic">Metallic</option>
+          </select>
+        </div>
+        <div>
+          <label data-i18n="sizeType">اندازه چاپ</label>
+          <div class="chips" id="sizeChips">
+            <span class="chip active" data-size="4x6">4×6</span>
+            <span class="chip" data-size="5x7">5×7</span>
+            <span class="chip" data-size="8x10">8×10</span>
+            <span class="chip" data-size="A4">A4</span>
+            <span class="chip" data-size="A3">A3</span>
+          </div>
+        </div>
+        <div>
+          <label data-i18n="fileUpload">انتخاب فایل عکس</label>
+          <input type="file" id="fileInput" accept="image/*">
+        </div>
+      </div>
+      <div class="progress-wrap" id="progressWrap"><div class="progress-bar" id="progressBar"></div></div>
+      <div style="margin-top:18px"><button id="submitOrder" data-i18n="submitOrder">ثبت سفارش و آپلود</button></div>
+      <div id="orderMsg"></div>
+    </div>
+  </section>
+
+  <section id="tracking">
+    <h2 data-i18n="trackTitle">رهگیری سفارش</h2>
+    <div class="card">
+      <label data-i18n="trackCode">کد رهگیری (مثال: AFR-1234)</label>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <input type="text" id="trackInput" placeholder="AFR-XXXX" style="flex:1;min-width:200px">
+        <button id="trackBtn" data-i18n="trackBtn">جستجو</button>
+      </div>
+      <div class="track-result card" id="trackResult"></div>
+      <div id="trackMsg"></div>
+    </div>
+  </section>
+
+  <section id="gallery">
+    <h2 data-i18n="galleryTitle">گالری نمونه کارها</h2>
+    <div class="gallery-grid" id="galleryGrid"></div>
+  </section>
+
+  <section id="contact">
+    <h2 data-i18n="contactTitle">تماس با ما</h2>
+    <div class="card contact-list">
+      <div>📸 اینستاگرام: <a href="https://instagram.com/Afranglab" target="_blank">@Afranglab</a></div>
+      <div>☎️ تلفن ثابت: <a href="tel:03132312375">03132312375</a></div>
+      <div>📱 موبایل ۱: <a href="tel:09133118039">09133118039</a></div>
+      <div>📱 موبایل ۲: <a href="tel:09131088114">09131088114</a></div>
+    </div>
+  </section>
+
+  <section id="adminDashboard">
+    <h2 data-i18n="adminTitle">پنل مدیریت</h2>
+    <div class="card">
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="ordersTab" data-i18n="tabOrders">سفارش‌ها</button>
+        <button class="tab-btn" data-tab="galleryTab" data-i18n="tabGallery">آپلود گالری</button>
+      </div>
+      <div class="tab-panel active" id="ordersTab">
+        <div id="ordersList"></div>
+      </div>
+      <div class="tab-panel" id="galleryTab">
+        <label data-i18n="galleryFile">انتخاب عکس برای گالری</label>
+        <input type="file" id="galleryFile" accept="image/*">
+        <div style="margin-top:14px"><button id="galleryUploadBtn" data-i18n="galleryUpload">آپلود به گالری</button></div>
+        <div id="galleryMsg" style="margin-top:12px;font-size:.9rem"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer data-i18n="footer">© لابراتوار عکس آفرنگ — تمامی حقوق محفوظ است.</footer>
+
+<div class="modal" id="adminModal">
+  <div class="modal-content">
+    <button class="modal-close" id="adminModalClose">×</button>
+    <h3 data-i18n="adminLogin">ورود مدیر</h3>
+    <label data-i18n="password">رمز عبور</label>
+    <input type="password" id="adminPass" placeholder="••••••••">
+    <div style="margin-top:16px"><button id="adminLoginBtn" data-i18n="loginBtn">ورود</button></div>
+    <div id="adminMsg" style="margin-top:12px;font-size:.9rem;color:#dc2626"></div>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+<script>
+// ===== Firebase init (project: afrang-5aa57) =====
+const firebaseConfig = {
+  apiKey: "AIzaSyPLACEHOLDER-Afrang",
+  authDomain: "afrang-5aa57.firebaseapp.com",
+  projectId: "afrang-5aa57",
+  storageBucket: "afrang-5aa57.appspot.com",
+  messagingSenderId: "000000000000",
+  appId: "1:000000000000:web:afrangweb"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+const storage = firebase.storage();
+
+// ===== i18n =====
+const I18N = {
+  fa:{navOrder:"سفارش چاپ",navTrack:"رهگیری سفارش",navGallery:"گالری",navContact:"تماس با ما",
+    heroTitle:"چاپ عکس حرفه‌ای، با کیفیت آرشیوی",
+    heroSub:"سفارش آنلاین چاپ عکس روی کاغذهای Silk، Luster، Glossy و Metallic با ارسال سریع",
+    heroCta:"همین حالا سفارش بده",orderTitle:"ثبت سفارش چاپ",fullName:"نام و نام خانوادگی",
+    phone:"شماره تماس",paperType:"نوع کاغذ",sizeType:"اندازه چاپ",fileUpload:"انتخاب فایل عکس",
+    submitOrder:"ثبت سفارش و آپلود",trackTitle:"رهگیری سفارش",trackCode:"کد رهگیری (مثال: AFR-1234)",
+    trackBtn:"جستجو",galleryTitle:"گالری نمونه کارها",contactTitle:"تماس با ما",
+    adminTitle:"پنل مدیریت",tabOrders:"سفارش‌ها",tabGallery:"آپلود گالری",
+    galleryFile:"انتخاب عکس برای گالری",galleryUpload:"آپلود به گالری",
+    adminLogin:"ورود مدیر",password:"رمز عبور",loginBtn:"ورود",
+    footer:"© لابراتوار عکس آفرنگ — تمامی حقوق محفوظ است.",
+    notFound:"سفارشی با این کد پیدا نشد.",wrongPass:"رمز عبور اشتباه است.",
+    fillAll:"لطفاً همه فیلدها و فایل را تکمیل کنید.",uploading:"در حال آپلود...",
+    done:"سفارش با موفقیت ثبت شد. کد رهگیری:"},
+  en:{navOrder:"Order Print",navTrack:"Track Order",navGallery:"Gallery",navContact:"Contact",
+    heroTitle:"Professional Photo Printing, Archival Quality",
+    heroSub:"Order online prints on Silk, Luster, Glossy and Metallic papers with fast delivery",
+    heroCta:"Order Now",orderTitle:"Place Print Order",fullName:"Full Name",
+    phone:"Phone Number",paperType:"Paper Type",sizeType:"Print Size",fileUpload:"Choose Photo File",
+    submitOrder:"Submit Order & Upload",trackTitle:"Track Order",trackCode:"Tracking code (e.g. AFR-1234)",
+    trackBtn:"Search",galleryTitle:"Gallery",contactTitle:"Contact Us",
+    adminTitle:"Admin Dashboard",tabOrders:"Orders",tabGallery:"Gallery Upload",
+    galleryFile:"Choose gallery image",galleryUpload:"Upload to Gallery",
+    adminLogin:"Admin Login",password:"Password",loginBtn:"Login",
+    footer:"© Afrang Photo Lab — All rights reserved.",
+    notFound:"No order found for this code.",wrongPass:"Wrong password.",
+    fillAll:"Please fill all fields and choose a file.",uploading:"Uploading...",
+    done:"Order submitted successfully. Tracking code:"}
+};
+let lang = localStorage.getItem("lang") || "fa";
+function applyLang(){
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === "fa" ? "rtl" : "ltr";
+  document.querySelectorAll("[data-i18n]").forEach(el=>{
+    const k = el.dataset.i18n;
+    if(I18N[lang][k]) el.textContent = I18N[lang][k];
+  });
+}
+document.getElementById("langBtn").addEventListener("click",()=>{
+  lang = lang === "fa" ? "en" : "fa";
+  localStorage.setItem("lang", lang);
+  applyLang();
+});
+
+// ===== Theme switcher =====
+const THEMES = ["blue-slate","crimson-cream"];
+document.getElementById("themeBtn").addEventListener("click",()=>{
+  const cur = document.documentElement.getAttribute("data-theme");
+  const next = cur === "blue-slate" ? "crimson-cream" : "blue-slate";
+  document.documentElement.setAttribute("data-theme", next);
+  localStorage.setItem("theme", next);
+});
+const savedTheme = localStorage.getItem("theme");
+if(savedTheme && THEMES.includes(savedTheme))
+  document.documentElement.setAttribute("data-theme", savedTheme);
+
+// ===== Size chips =====
+let selectedSize = "4x6";
+document.querySelectorAll("#sizeChips .chip").forEach(c=>{
+  c.addEventListener("click",()=>{
+    document.querySelectorAll("#sizeChips .chip").forEach(x=>x.classList.remove("active"));
+    c.classList.add("active");
+    selectedSize = c.dataset.size;
+  });
+});
+
+// ===== Order submit =====
+document.getElementById("submitOrder").addEventListener("click",()=>{
+  const name = document.getElementById("custName").value.trim();
+  const phone = document.getElementById("custPhone").value.trim();
+  const paper = document.getElementById("paperType").value;
+  const file = document.getElementById("fileInput").files[0];
+  const msg = document.getElementById("orderMsg");
+  const wrap = document.getElementById("progressWrap");
+  const bar = document.getElementById("progressBar");
+  if(!name || !phone || !file){ msg.textContent = I18N[lang].fillAll; return; }
+  const code = "AFR-" + Math.floor(1000 + Math.random()*9000);
+  msg.textContent = I18N[lang].uploading;
+  wrap.style.display = "block";
+  const path = "orders/" + code + "_" + file.name;
+  const task = storage.ref().child(path).put(file);
+  task.on("state_changed",
+    snap => { bar.style.width = (snap.bytesTransferred/snap.totalBytes*100).toFixed(1) + "%"; },
+    err => { msg.textContent = "❌ " + err.message; wrap.style.display = "none"; },
+    async () => {
+      const url = await task.snapshot.ref.getDownloadURL();
+      await db.collection("orders").add({
+        code, name, phone, paper, size: selectedSize,
+        filePath: path, fileUrl: url,
+        status: "pending", price: null,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      bar.style.width = "100%";
+      msg.textContent = "✅ " + I18N[lang].done + " " + code;
+      setTimeout(()=>{ wrap.style.display = "none"; bar.style.width = "0"; }, 1500);
+    });
+});
+
+// ===== Tracking =====
+document.getElementById("trackBtn").addEventListener("click", async ()=>{
+  const code = document.getElementById("trackInput").value.trim().toUpperCase();
+  const res = document.getElementById("trackResult");
+  const msg = document.getElementById("trackMsg");
+  res.style.display = "none";
+  const snap = await db.collection("orders").where("code","==",code).get();
+  if(snap.empty){ msg.textContent = I18N[lang].notFound; return; }
+  msg.textContent = "";
+  const o = snap.docs[0].data();
+  res.style.display = "block";
+  res.innerHTML = '<b>'+o.code+'</b> — '+o.name+' | '+o.paper+' '+o.size+
+    '<br><span class="status-badge">'+o.status+'</span>'+
+    (o.price ? '<br>💰 '+o.price : '')+
+    (o.fileUrl ? '<br><a href="'+o.fileUrl+'" target="_blank">📎 file</a>' : '');
+});
+
+// ===== Gallery render =====
+async function loadGallery(){
+  const grid = document.getElementById("galleryGrid");
+  grid.innerHTML = "";
+  try{
+    const snap = await db.collection("gallery").orderBy("createdAt","desc").limit(24).get();
+    snap.forEach(doc=>{
+      const d = doc.data();
+      const div = document.createElement("div");
+      div.className = "gallery-item";
+      div.innerHTML = '<img src="'+d.url+'" alt="gallery" loading="lazy">';
+      grid.appendChild(div);
+    });
+  }catch(e){ grid.innerHTML = "<p style='color:var(--muted)'>Gallery unavailable</p>"; }
+}
+loadGallery();
+
+// ===== Admin =====
+const ADMIN_PASS = "afrang1403";
+let isAdmin = sessionStorage.getItem("afrangAdmin") === "1";
+const adminModal = document.getElementById("adminModal");
+document.getElementById("adminBtn").addEventListener("click",()=>{
+  if(isAdmin) toggleDashboard();
+  else adminModal.classList.add("open");
+});
+document.getElementById("adminModalClose").addEventListener("click",()=>adminModal.classList.remove("open"));
+document.getElementById("adminLoginBtn").addEventListener("click",()=>{
+  const p = document.getElementById("adminPass").value;
+  if(p === ADMIN_PASS){
+    isAdmin = true;
+    sessionStorage.setItem("afrangAdmin","1");
+    adminModal.classList.remove("open");
+    document.getElementById("adminMsg").textContent = "";
+    toggleDashboard();
+  }else{
+    document.getElementById("adminMsg").textContent = I18N[lang].wrongPass;
+  }
+});
+function toggleDashboard(){
+  const d = document.getElementById("adminDashboard");
+  d.style.display = (d.style.display === "none" || !d.style.display) ? "block" : "none";
+  if(d.style.display === "block") loadOrders();
+}
+document.querySelectorAll(".tab-btn").forEach(b=>{
+  b.addEventListener("click",()=>{
+    document.querySelectorAll(".tab-btn").forEach(x=>x.classList.remove("active"));
+    document.querySelectorAll(".tab-panel").forEach(x=>x.classList.remove("active"));
+    b.classList.add("active");
+    document.getElementById(b.dataset.tab).classList.add("active");
+  });
+});
+
+// ===== Admin: orders tab =====
+async function loadOrders(){
+  const list = document.getElementById("ordersList");
+  list.innerHTML = "<p style='color:var(--muted)'>Loading...</p>";
+  const snap = await db.collection("orders").orderBy("createdAt","desc").limit(100).get();
+  list.innerHTML = "";
+  snap.forEach(doc=>{
+    const o = doc.data();
+    const row = document.createElement("div");
+    row.className = "order-row";
+    row.innerHTML =
+      '<div class="info"><b>'+o.code+'</b> — '+o.name+' ('+o.phone+')'+
+      '<small>'+o.paper+' | '+o.size+' | '+(o.price?('💰 '+o.price):'—')+'</small></div>'+
+      '<select class="status-select">'+
+        ["pending","printing","ready","delivered"].map(s=>
+          '<option '+(o.status===s?'selected':'')+'>'+s+'</option>').join("")+
+      '</select>'+
+      '<input type="number" placeholder="price" value="'+(o.price||"")+'" style="width:110px">'+
+      '<a class="btn" href="'+o.fileUrl+'" target="_blank" download>📎</a>';
+    row.querySelector(".status-select").addEventListener("change", e=>
+      doc.ref.update({status: e.target.value}));
+    row.querySelector("input").addEventListener("change", e=>
+      doc.ref.update({price: Number(e.target.value)||null}));
+    list.appendChild(row);
+  });
+}
+
+// ===== Admin: gallery upload tab =====
+document.getElementById("galleryUploadBtn").addEventListener("click",()=>{
+  const file = document.getElementById("galleryFile").files[0];
+  const msg = document.getElementById("galleryMsg");
+  if(!file){ msg.textContent = I18N[lang].fillAll; return; }
+  const path = "gallery/" + Date.now() + "_" + file.name;
+  const task = storage.ref().child(path).put(file);
+  task.on("state_changed", null,
+    err => msg.textContent = "❌ " + err.message,
+    async ()=>{
+      const url = await task.snapshot.ref.getDownloadURL();
+      await db.collection("gallery").add({url, filePath: path,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()});
+      msg.textContent = "✅ uploaded";
+      document.getElementById("galleryFile").value = "";
+      loadGallery();
+    });
+});
+
+applyLang();
+</script>
+</body>
+</html>
