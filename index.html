@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" data-theme="blue-slate">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لابراتوار عکس آفرنگ | Afrang Photo Lab</title>
+<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+<style>
+:root{--radius:14px;--transition:all .3s ease;}
+[data-theme="blue-slate"]{
+  --bg:#0f172a;--bg2:#1e293b;--card:#1e293b;--text:#e2e8f0;--muted:#94a3b8;
+  --primary:#3b82f6;--primary2:#6366f1;--border:#334155;--input-bg:#0f172a;
+  --shadow:0 4px 20px rgba(0,0,0,.4);}
+[data-theme="crimson-cream"]{
+  --bg:#fdf6ec;--bg2:#fffaf2;--card:#fffdf8;--text:#3b2f2f;--muted:#8a7466;
+  --primary:#dc2626;--primary2:#b91c1c;--border:#eadfce;--input-bg:#ffffff;
+  --shadow:0 4px 20px rgba(180,60,60,.15);}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Vazirmatn',Tahoma,sans-serif;}
+body{background:var(--bg);color:var(--text);transition:var(--transition);min-height:100vh;}
+a{color:inherit;text-decoration:none;}
+header{position:sticky;top:0;z-index1px solid var(--border);
+  display:flex;align-itemspx solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;padding:12px 20px;flex-wrap:wrap;gap:10px;}
+.logo{font-weight:800;font-size:1.1rem;display:flex;align-items:center;gap:8px;}
+.logo span{color:var(--primary);}
+nav{display:flex;gap:16px;flex-wrap:wrap;}
+nav a{color:var(--muted);font-size:.95rem;padding:6px 4px;border-bottom:2px solid transparent;}
+nav a:hover{color:var(--primary);border-color:var(--primary);}
+.header-actions{display:flex;gap:8px;}
+button,.btn{cursor:pointer;border:none;border-radius:var(--radius);padding:10px 18px;font-size:.95rem;
+  background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;transition:var(--transition);font-family:inherit;}
+button:hover,.btn:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(59,130,246,.35);}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text);}
+.btn-outline:hover{border-color:var(--primary);color:var(--primary);box-shadow:none;}
+main{max-width:1100px;margin:0 auto;padding:24px 20px;}
+section{margin-bottom:48px;}
+h2{font-size:1.5rem;margin-bottom:18px;color:var(--primary);}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);}
+.hero{text-align:center;padding:70px 20px;background:linear-gradient(135deg,rgba(59,130,246,.12),rgba(99,102,241,.12));border-radius:var(--radius);}
+.hero h1{font-size:2.2rem;margin-bottom:14px;}
+.hero p{color:var(--muted);margin-bottom:24px;font-size:1.05rem;}
+.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:(--muted);}
+input,select,textarea{width:100%;:6px;color:var(--muted);}
+input,select,textarea{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--border);
+  background:var(--input-bg);color:var(--text);font-family:inherit;font-size:.95rem;}
+input:focus,select:focus{outline:none;border-color:var(--primary);}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 16px;}
+.chip{padding:8px 14px;border:1px solid var(--border);border-radius:999px;background:transparent;color:var(--text);cursor:pointer;font-size:.9rem;}
+.chip.active{background:var(--primary);color:#fff;border-color:var(--primary);}
+.progress-wrap{display:none;margin-top:14px;}
+.progress{height:8px;background:var(--input-bg);border-radius:999px;overflow:hidden;border:1px solid var(--border);}
+.progress-bar{height:100%;width:0;background:linear-gradient(90deg,var(--primary),var(--primary2));transition:width .3s;}
+.msg{margin-top:12px;font-size:.95rem;min-height:1.2em;}
+.gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;}
+.gallery-item{border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);aspect-ratio:1;}
+.gallery-item img{width:100%;height:100%;object-fit:cover;}
+.track-result{display:none;margin-top:14px;padding:14px;border:1px solid var(--border);border-radius:var(--radius);background:var(--input(--input.status-badge{display:inline-block;padding:2px 10px;border-radius:999px;font-size:.8rem;background:var(--primary);color:#fff;}
+footer{text-align:center;padding:24px;color:var(--muted);font-size:.85rem;border-top:1px solid var(--border);}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;-index::center;justify-content:center;z-index:200;}
+.modal.open{display:flex;}
+.modal .card{width:min(400px,92vw);}
+@media(max-width:640px){.hero h1{font-size:1.5rem;} nav{display:none;}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">📷 لابراتوار عکس <span>آفرنگ</span></div>
+  <nav>
+    <a href="#order">ثبت سفارش</a>
+    <a href="#track">رهگیری</a>
+    <a href="#gallery">گالری</a>
+    <a href="#contact">تماس</a>
+  </nav>
+  <div class="header-actions">
+    <button class="btn-outline" id="themeBtn" title="تغییر تم">🎨</button>
+    <a class="btn-outline" href="admin.html" target="_blank">پنل مدیریت</a>
+  </div>
+</header>
+<main>
+  <section class="hero">
+    <h1>چاپ عکس حرفه‌ای، با کیفیت آرشیوی</h1>
+    <p>سفارش آنلاین چاپ عکس روی کاغذهای Silk،سال سریع</py و Metallic با ارسال سریع</p>
+    <a class="btn" href="#order">همین حالا سفارش بده</a>
+  </section>
+
+  <section id="order">
+    <h2>ثبت سفارش چاپ</h2>
+    <div class="card">
+      <div class="form-grid">
+        <div><label>نام و نام خانوادگی</label><input id="custName" placeholder="نام کامل"></div>
+        <div><label>شماره تماس</label><input id="custPhone" placeholder="09xxxxxxxxx" inputmode="tel"></div>
+        <div><label>نوع کاغذ</label>
+          <select id="paperType">
+            <option value="Silk">Silk (نیمه‌مات)</option>
+            <option value="Luster">Luster</option>
+            <option value="Glossy">Glossy (براق)</option>
+            <option value="Metallic">Metallic</option>
+          </select></div>
+        <div><label>تعداد</label><input id="qty" type="number" min="1" value="1"></div>
+      </div>
+      <label style="margin-top:14px">اندازه چاپ</label>
+      <div class="chips" id="sizeChips">
+        <button class="chip active" data-size="4x6">4×6</button>
+        <button class="chip" data-size="5x7">5×7</button>
+        <button class="chip" data-size="8x10">8×10</button>
+        <button class="chip" data-size="A4">A4</button>
+        <button class="chip" data-size="A3">A3</button>
+        <button class="chip" data-size="20x30">20×30</button>
+      </div>
+      <label>انتخاب فایل عکس</label>
+      <input type="file" id="fileInput" accept="image/*">
+      <div class="progress-wrap" id="progressWrap">
+        <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+      </div>
+      <div class="msg" id="orderMsg"></div>
+      <button id="submitOrder" style="margin-top:14px">ثبت سفارش و آپلود</button>
+    </div>
+  </section>
+
+  <section id="track">
+    <h2>رهگیری سفارش</h2>
+    <div class="card">
+      <label>کد رهگیری (مثال: AFR-1234)</label>
+      <input id="trackInput" placeholder="AFR-1234">
+      <button id="trackBtn" style="margin-top:12px">جستجو</button>
+      <div class="msg" id="trackMsg"></div>
+      <div class="track-result" id="trackResult"></div>
+    </div>
+  </section>
+
+  <section id="gallery">
+    <h2>گالری نمونه <div class="gallery-grid" id="galleryGrid"><p style="colorGrid"><p style="color:var(--muted)">در حال بارگذاری...</p></div>
+  </section>
+
+  <section id="contact">
+    <h2>تماس با ما</h2>
+    <div class="card">
+      <p>📍 آدرس: تهران — لابراتوار عکس آفرنگ</p>
+      <p>📞 تلفن: ۰۲۱-۰۰۰۰۰۰۰۰</p>
+      <p>🕒 ساعت کاری: همه‌روزه ۹ تا ۲۱</p>
+    </div>
+  </section>
+</main>
+<footer>© لابراتوار عکس آفرنگ — تمامی حقوق محفوظ است.</footer>
+
+<script>
+const API_URL = "https://script.google.com/macros/s/AKfycbxv5kr2xC1-aEkn7RIQTbbmyw9ZouxHYCqBSUeHi2rS8wcUNdfYKNrU4djZY23vyydX/exec";
+
+// ===== Theme =====
+document.getElementById("themeBtn").addEventListener("click",()=>{
+  const cur = document.documentElement.getAttribute("data-theme");
+  const next = cur === "blue-slate" ? "crimson-cream" : "blue-slate";
+  document.documentElement.setAttribute("data-theme", next);
+  localStorage.setItem("theme", next);
+});
+const savedTheme = localStorage.getItem("theme");
+if(savedTheme) document.documentElement.setAttribute("data-theme", savedTheme);
+
+// ===== Size chips =====
+let selectedSize = "4x6";
+document.querySelectorAll("#sizeChips .chip").forEach(c=>{
+  c.addEventListener("click",()=>{
+    document.querySelectorAll("#sizeChips .chip").forEach(x=>x.classList.remove("active"));
+    c.classList.add("active");
+    selectedSize = c.dataset.size;
+  });
+});
+
+// ===== Helpers =====
+function fileToBase64(file){
+  return new Promise((resolve,reject)=>{
+    const r = new FileReader();
+    r.onload = () => resolve(r.result.split(",")[1]);
+    r.onerror = reject;
+    r.readAsDataURL(file);
+  });
+}
+async function apiCall(payload){
+  const res = await fetch(API_URL, {
+    method:"POST",
+    headers:{"Content-Type":"text/plain;charset=utf-8"},
+    body: JSON.stringify(payload)
+  });
+  return res.json();
+}
+
+// ===== Order submit (base64 upload via Apps Script) =====
+document.getElementById("submitOrder").addEventListener("click", async ()=>{
+  const name();
+  const phone = document.getElementById("cust();
+  const phone = document.getElementById("custPhone").value.trim();
+  const paper = document.getElementById("paperType").value;
+  const qty = parseInt(document.getElementById("qty").value)||1;
+  const file = document.getElementById("fileInput").files[0];
+  const msg = document.getElementById("orderMsg");
+  const wrap = document.getElementById("progressWrap");
+  const bar = document.getElementById("progressBar");
+  if(!name || !phone || !file){ msg.textContent = "❌ لطفاً همه فیلدها و فایل را تکمیل کنید."; return; }
+  msg.textContent = "⏳ در حال آماده‌سازی...";
+  wrap.style.display = "block";
+  try{
+    const b64 = await fileToBase64(file);
+    bar.style.width = "60%";
+    const data = await apiCall({
+      action:"createOrder",
+      name, phone, paper, size:selectedSize, qty,
+      fileName:file.name, mimeType:file.type, fileBase64:b64
+    });
+    bar.style.width = "100%";
+    if(data.ok){
+      msg.textContent = "✅ سفارش با موفقیت ثبت شد. کد رهگیری: " + data.code;
+    }else{
+      msg.textContent = "❌ خطا: " + (data.error||"نامشخص");
+    }
+  }catch(e){
+    msg.textContent = "❌ خطا در ارسال: " + e.message;
+  }finally{
+    setTimeout(()=>{ wrap.style.display="none"; bar.style.width="0"; },1500);
+  }
+});
+
+// ===== Tracking =====
+document.getElementById("trackBtn").addEventListener("click", async ()=>{
+  const code = document.getElementById("trackInput").value.trim().toUpperCase();
+  const res = document.getElementById("trackResult");
+  const msg = document.getElementById("trackMsg");
+  res.style.display="none";
+  if(!code){ msg.textContent="کد رهگیری را وارد کنید."; return; }
+  msg.textContent = "⏳ در حال جستجو...";
+  try{
+    const data = await apiCall({action:"getOrder", code});
+    if(data.ok && data.order){
+      msg.textContent="";
+      const o = data.order;
+      res.style.display="block";
+      res.innerHTML = "<b>"+o.code+"</b> — "+o.name+" | "+o.paper+" "+o.size+
+        "<br><span class='status-badge'>"+(o.status||"pending")+"</span>"+
+        (o.price ? "<br>💰 "+o.price : "");
+    }else{
+      msg.textContent = "سفارشی با این کد پیدا نشد.";
+    }
+  }catch(e){ msg.textContent = "❌ خطا: "+e.message; }
+});
+
+// ===== Gallery =====
+(async function loadGallery(){
+  const grid = document.getElementById("galleryGrid");
+  try{
+    const data = await apiCall({action:"getGallery"});
+    if(data.ok && data.items && data.items.length){
+      grid.innerHTML="";
+      data.items.forEach(u=>{
+        const div=document.createElement("div");
+        div.className="gallery-item";
+        div.innerHTML='<img src="'+u+'" alt="gallery" loading="lazy">';
+        grid.appendChild(div);
+      });
+    }else{ grid.innerHTML="<p style='color:var(--muted)'>هنوز عکسی در گالری نیست.</p>"; }
+  }catch(e){ grid.innerHTML="<p style='color:var(--muted)'>گالری در دسترس نیست.</p>"; }
+})();
+</script>
+</body>
+</html>
