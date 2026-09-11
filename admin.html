@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" data-theme="blue">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پنل مدیریت Admiralsitca</title>
+    <style>
+        :root {
+            --font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', Tahoma, sans-serif;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+        }
+
+        [data-theme="blue"] {
+            --bg-base: #0a0f18;
+            --bg-surface: #111b2b;
+            --bg-card: #18253a;
+            --bg-input: #0e1726;
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --primary-glow: rgba(37, 99, 235, 0.35);
+            --accent: #38bdf8;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #1e293b;
+            --border-focus: #38bdf8;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --badge-bg: rgba(56, 189, 248, 0.12);
+            --badge-text: #38bdf8;
+        }
+
+        [data-theme="orange"] {
+            --bg-base: #0c0a09;
+            --bg-surface: #181412;
+            --bg-card: #241d1a;
+            --bg-input: #120e0c;
+            --primary: #f97316;
+            --primary-hover: #ea580c;
+            --primary-glow: rgba(249, 115, 22, 0.35);
+            --accent: #fb923c;
+            --text-main: #fafaf9;
+            --text-muted: #a8a29e;
+            --border: #292524;
+            --border-focus: #fb923c;
+            --success: #22c55e;
+            --warning: #eab308;
+            --danger: #ef4444;
+            --badge-bg: rgba(251, 146, 60, 0.15);
+            --badge-text: #fb923c;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-family);
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.6;
+            transition: var(--transition);
+        }
+
+        header {
+            background-color: var(--bg-surface);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            background: linear-gradient(135deg, var(--text-main), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .btn-ctrl {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+        }
+
+        .btn-ctrl:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 12px var(--primary-glow);
+        }
+
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--danger);
+            border: 1px solid var(--danger);
+        }
+
+        .btn-danger:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2.5rem 1.5rem;
+            flex: 1;
+            width: 100%;
+        }
+
+        /* Login Screen */
+        .login-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 60vh;
+        }
+
+        .login-card {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 440px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+            text-align: center;
+        }
+
+        .login-card h2 {
+            margin-bottom: 0.5rem;
+            font-size: 1.6rem;
+        }
+
+        .login-card p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: right;
+        }
+        [dir="ltr"] .form-group {
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        input[type="password"],
+        input[type="text"],
+        textarea {
+            width: 100%;
+            background-color: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 0.75rem 1rem;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        input:focus, textarea:focus {
+            border-color: var(--border-focus);
+            box-shadow: 0 0 0 3px var(--primary-glow);
+        }
+
+        .btn-submit {
+            width: 100%;
+            background-color: var(--primary);
+            color: white;
+            padding: 0.85rem;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-submit:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+
+        .alert-error {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--danger);
+            border: 1px solid var(--danger);
+            padding: 0.75rem;
+            border-radius: var(--radius-sm);
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            display: none;
+        }
+
+        /* Dashboard Tabs */
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 2rem;
+            padding-bottom: 0.5rem;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 0.75rem 1.5rem;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tab-btn.active {
+            background-color: var(--bg-card);
+            color: var(--accent);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .badge-count {
+            background: var(--primary);
+            color: white;
+            padding: 0.15rem 0.6rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+        }
+
+        /* Item Cards */
+        .items-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .dash-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            transition: var(--transition);
+        }
+
+        .dash-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .badge-status {
+            padding: 0.3rem 0.8rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .badge-pending {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--warning);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .badge-done {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .reply-zone {
+            margin-top: 1.25rem;
+            background: var(--bg-card);
+            padding: 1rem;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+        }
+
+        .actions-bar {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 0.75rem;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid transparent;
+            transition: var(--transition);
+        }
+
+        .btn-action-primary {
+            background-color: var(--primary);
+            color: #fff;
+        }
+        .btn-action-primary:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .tag-pill {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-inline-end: 0.4rem;
+        }
+
+        .tag-pill.active {
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        footer {
+            background-color: var(--bg-surface);
+            border-top: 1px solid var(--border);
+            padding: 1.5rem;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <div class="logo">
+                <span>🛡️</span> Admiralsitca Admin
+            </div>
+            <div class="header-controls">
+                <button class="btn-ctrl" id="themeToggleBtn" onclick="toggleTheme()">
+                    <span id="themeIcon">🎨</span> <span id="themeLabel">تم: آبی</span>
+                </button>
+                <button class="btn-ctrl" id="langToggleBtn" onclick="toggleLang()">
+                    🌐 <span id="langLabel">English</span>
+                </button>
+                <a href="index.html" class="btn-ctrl" style="text-decoration:none;">
+                    🏠 <span data-i18n="viewerSite">سایت اصلی</span>
+                </a>
+                <button class="btn-ctrl btn-danger" id="logoutBtn" style="display:none;" onclick="handleLogout()">
+                    🚪 <span data-i18n="logout">خروج</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Login Screen -->
+        <div id="loginSection" class="login-wrapper">
+            <div class="login-card">
+                <h2 data-i18n="loginTitle">ورود به پنل مدیریت</h2>
+                <p data-i18n="loginDesc">لطفاً رمز عبور امنیتی را وارد نمایید</p>
+                <form id="adminLoginForm" onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label for="adminPass" data-i18n="lblPass">رمز عبور مدیریت:</label>
+                        <input type="password" id="adminPass" required placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="btn-submit" data-i18n="btnLogin">ورود به سیستم</button>
+                    <div id="loginError" class="alert-error" data-i18n="errPass">رمز عبور نادرست است. دسترسی غیرمجاز!</div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Dashboard Screen -->
+        <div id="dashboardSection" style="display:none;">
+            <div class="tabs">
+                <button class="tab-btn active" id="tabTicketsBtn" onclick="switchTab('tickets')">
+                    📩 <span data-i18n="tabTickets">تیکت‌های پشتیبانی</span> <span class="badge-count" id="ticketCount">0</span>
+                </button>
+                <button class="tab-btn" id="tabGamesBtn" onclick="switchTab('games')">
+                    🎮 <span data-i18n="tabGames">پیشنهاد بازی‌ها</span> <span class="badge-count" id="gameCount">0</span>
+                </button>
+            </div>
+
+            <!-- Tickets Content -->
+            <div id="ticketsTabContent">
+                <div id="ticketsList" class="items-list"></div>
+            </div>
+
+            <!-- Games Content -->
+            <div id="gamesTabContent" style="display:none;">
+                <div id="gamesList" class="items-list"></div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2025 Admiralsitca Admin Management Suite</p>
+    </footer>
+
+    <script>
+        const API_URL = "https://script.google.com/macros/s/AKfycbzAaJHjPk24NYar1-kk6tAbXjUyWtxVYfRlVYKHlvy3U3FFkKITYNJKELVliFerNLeL/exec";
+        const AUTH_KEY = 'admiral_admin_auth';
+        
+        async function syncCloudData() {
+            try {
+                const res = await fetch(API_URL + '?action=getData');
+                const data = await res.json();
+                if (data && data.tickets && Array.isArray(data.tickets)) {
+                    localStorage.setItem('admiral_tickets', JSON.stringify(data.tickets));
+                    if (typeof renderTickets === 'function') renderTickets();
+                    if (typeof updateStats === 'function') updateStats();
+                }
+                if (data && data.games && Array.isArray(data.games)) {
+                    localStorage.setItem('admiral_games', JSON.stringify(data.games));
+                    if (typeof renderGames === 'function') renderGames();
+                    if (typeof updateStats === 'function') updateStats();
+                }
+            } catch (err) {
+                console.warn('Could not sync cloud data:', err);
+            }
+        }
+
+        const CORRECT_PASS = 'ADMIN HIMALIA';
+
+        const I18N = {
+            fa: {
+                viewerSite: "سایت اصلی",
+                logout: "خروج",
+                loginTitle: "ورود به پنل مدیریت",
+                loginDesc: "لطفاً رمز عبور امنیتی را وارد نمایید",
+                lblPass: "رمز عبور مدیریت:",
+                btnLogin: "ورود به سیستم",
+                errPass: "رمز عبور نادرست است. دسترسی غیرمجاز!",
+                tabTickets: "تیکت‌های پشتیبانی",
+                tabGames: "پیشنهاد بازی‌ها",
+                noTickets: "هیچ تیکتی در سامانه ثبت نشده است.",
+                noGames: "هیچ پیشنهادی برای بازی ثبت نشده است.",
+                ticketPending: "در انتظار بررسی",
+                ticketDone: "انجام شد",
+                replyPlaceholder: "پاسخ مدیریت را اینجا بنویسید...",
+                btnSubmitReply: "ثبت پاسخ و تکمیل تیکت",
+                btnDelete: "حذف",
+                catPrefix: "دسته‌بندی:",
+                datePrefix: "تاریخ:",
+                scorePrefix: "امتیاز کاربر:",
+                platformPrefix: "پلتفرم:",
+                confirmDeleteTicket: "آیا از حذف این تیکت مطمئن هستید؟",
+                confirmDeleteGame: "آیا از حذف این پیشنهاد بازی مطمئن هستید؟",
+                replySuccess: "پاسخ با موفقیت ذخیره و وضعیت تیکت تغییر یافت."
+            },
+            en: {
+                viewerSite: "Main Site",
+                logout: "Logout",
+                loginTitle: "Admin Panel Login",
+                loginDesc: "Please enter the administrative security key",
+                lblPass: "Admin Password:",
+                btnLogin: "Login to Dashboard",
+                errPass: "Incorrect password. Unauthorized access!",
+                tabTickets: "Support Tickets",
+                tabGames: "Game Suggestions",
+                noTickets: "No support tickets recorded yet.",
+                noGames: "No game suggestions recorded yet.",
+                ticketPending: "Pending Review",
+                ticketDone: "Completed",
+                replyPlaceholder: "Write admin reply here...",
+                btnSubmitReply: "Submit Reply & Mark Resolved",
+                btnDelete: "Delete",
+                catPrefix: "Category:",
+                datePrefix: "Date:",
+                scorePrefix: "User Rating:",
+                platformPrefix: "Platform:",
+                confirmDeleteTicket: "Are you sure you want to delete this ticket?",
+                confirmDeleteGame: "Are you sure you want to delete this game suggestion?",
+                replySuccess: "Reply saved and ticket marked as completed."
+            }
+        };
+
+        let currentTheme = localStorage.getItem('admiral_theme') || 'blue';
+        let currentLang = localStorage.getItem('admiral_lang') || 'fa';
+        let activeTab = 'tickets';
+
+        function applyTheme(theme) {
+            currentTheme = theme;
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('admiral_theme', theme);
+            const label = document.getElementById('themeLabel');
+            if (label) {
+                label.innerText = theme === 'blue' 
+                    ? (currentLang === 'fa' ? 'تم: آبی' : 'Theme: Blue') 
+                    : (currentLang === 'fa' ? 'تم: نارنجی' : 'Theme: Orange');
+            }
+        }
+
+        function toggleTheme() {
+            const nextTheme = currentTheme === 'blue' ? 'orange' : 'blue';
+            applyTheme(nextTheme);
+        }
+
+        function applyLanguage(lang) {
+            currentLang = lang;
+            document.documentElement.setAttribute('lang', lang);
+            document.documentElement.setAttribute('dir', lang === 'fa' ? 'rtl' : 'ltr');
+            localStorage.setItem('admiral_lang', lang);
+            
+            const langLabel = document.getElementById('langLabel');
+            if (langLabel) {
+                langLabel.innerText = lang === 'fa' ? 'English' : 'فارسی';
+            }
+
+            document.querySelectorAll('[data-i18n]').forEach(elem => {
+                const key = elem.getAttribute('data-i18n');
+                if (I18N[lang][key]) {
+                    elem.innerText = I18N[lang][key];
+                }
+            });
+
+            applyTheme(currentTheme);
+            if (sessionStorage.getItem(AUTH_KEY) === 'true') { syncCloudData(); setInterval(syncCloudData, 10000);
+                renderDashboard();
+            }
+        }
+
+        function toggleLang() {
+            const nextLang = currentLang === 'fa' ? 'en' : 'fa';
+            applyLanguage(nextLang);
+        }
+
+        /* Authentication */
+        function checkAuth() {
+            const isAuth = sessionStorage.getItem(AUTH_KEY) === 'true';
+            const loginSec = document.getElementById('loginSection');
+            const dashSec = document.getElementById('dashboardSection');
+            const logoutBtn = document.getElementById('logoutBtn');
+
+            if (isAuth) {
+                loginSec.style.display = 'none';
+                dashSec.style.display = 'block';
+                logoutBtn.style.display = 'inline-flex';
+                renderDashboard();
+            } else {
+                loginSec.style.display = 'flex';
+                dashSec.style.display = 'none';
+                logoutBtn.style.display = 'none';
+            }
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const inputVal = document.getElementById('adminPass').value;
+            const errElem = document.getElementById('loginError');
+
+            if (!inputVal || !inputVal.trim()) {
+                errElem.style.display = 'block';
+                return;
+            }
+
+            // Case-insensitive comparison with trim
+            if (inputVal.trim().toLowerCase() === CORRECT_PASS.toLowerCase()) {
+                sessionStorage.setItem(AUTH_KEY, 'true'); syncCloudData(); setInterval(syncCloudData, 10000);
+                errElem.style.display = 'none';
+                document.getElementById('adminPass').value = '';
+                checkAuth();
+            } else {
+                errElem.style.display = 'block';
+            }
+        }
+
+        function handleLogout() {
+            sessionStorage.removeItem(AUTH_KEY);
+            checkAuth();
+        }
+
+        /* Tabs Switching */
+        function switchTab(tab) {
+            activeTab = tab;
+            const tabTicketsBtn = document.getElementById('tabTicketsBtn');
+            const tabGamesBtn = document.getElementById('tabGamesBtn');
+            const ticketsContent = document.getElementById('ticketsTabContent');
+            const gamesContent = document.getElementById('gamesTabContent');
+
+            if (tab === 'tickets') {
+                tabTicketsBtn.classList.add('active');
+                tabGamesBtn.classList.remove('active');
+                ticketsContent.style.display = 'block';
+                gamesContent.style.display = 'none';
+            } else {
+                tabGamesBtn.classList.add('active');
+                tabTicketsBtn.classList.remove('active');
+                ticketsContent.style.display = 'none';
+                gamesContent.style.display = 'block';
+            }
+        }
+
+        /* Dashboard Render */
+        function renderDashboard() {
+            renderTickets();
+            renderGames();
+        }
+
+        function renderTickets() {
+            const tickets = JSON.parse(localStorage.getItem('admiral_tickets') || '[]');
+            document.getElementById('ticketCount').innerText = tickets.length;
+            const container = document.getElementById('ticketsList');
+
+            if (tickets.length === 0) {
+                container.innerHTML = `<div style="text-align:center; color:var(--text-muted); padding: 2rem;">${I18N[currentLang].noTickets}</div>`;
+                return;
+            }
+
+            container.innerHTML = tickets.map((t, idx) => {
+                const isDone = t.status === 'انجام شد' || t.status === 'Done';
+                const statusBadge = isDone 
+                    ? `<span class="badge-status badge-done">${I18N[currentLang].ticketDone}</span>`
+                    : `<span class="badge-status badge-pending">${I18N[currentLang].ticketPending}</span>`;
+
+                return `
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <div>
+                                <h3 style="color:var(--accent); font-size: 1.15rem;">${escapeHtml(t.name)}</h3>
+                                <div style="font-size:0.85rem; color:var(--text-muted); margin-top:0.25rem;">
+                                    <span>${I18N[currentLang].catPrefix} <strong>${escapeHtml(t.category)}</strong></span> | 
+                                    <span>${I18N[currentLang].datePrefix} ${t.date}</span>
+                                </div>
+                            </div>
+                            <div>${statusBadge}</div>
+                        </div>
+                        <p style="background:var(--bg-input); padding:1rem; border-radius:var(--radius-sm); border:1px solid var(--border); font-size:0.95rem; margin-bottom:1rem;">
+                            ${escapeHtml(t.text)}
+                        </p>
+                        <div class="reply-zone">
+                            <label style="font-size:0.85rem; color:var(--accent);">${I18N[currentLang].btnSubmitReply}:</label>
+                            <textarea id="reply-${t.id}" placeholder="${I18N[currentLang].replyPlaceholder}">${escapeHtml(t.reply || '')}</textarea>
+                            <div class="actions-bar">
+                                <button class="btn-action btn-danger" onclick="deleteTicket('${t.id}')">${I18N[currentLang].btnDelete}</button>
+                                <button class="btn-action btn-action-primary" onclick="saveReply('${t.id}')">💾 ${I18N[currentLang].btnSubmitReply}</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function saveReply(id) {
+            const textarea = document.getElementById('reply-' + id);
+            if (!textarea) return;
+            const replyText = textarea.value.trim();
+
+            const tickets = JSON.parse(localStorage.getItem('admiral_tickets') || '[]');
+            const ticket = tickets.find(t => t.id === id);
+            if (ticket) {
+                ticket.reply = replyText;
+                ticket.status = 'انجام شد';
+                localStorage.setItem('admiral_tickets', JSON.stringify(tickets));
+                renderTickets();
+            }
+        }
+
+        function deleteTicket(id) {
+            if (!confirm(I18N[currentLang].confirmDeleteTicket)) return;
+            let tickets = JSON.parse(localStorage.getItem('admiral_tickets') || '[]');
+            tickets = tickets.filter(t => t.id !== id);
+            localStorage.setItem('admiral_tickets', JSON.stringify(tickets));
+            renderTickets();
+        }
+
+        function renderGames() {
+            const games = JSON.parse(localStorage.getItem('admiral_games') || '[]');
+            document.getElementById('gameCount').innerText = games.length;
+            const container = document.getElementById('gamesList');
+
+            if (games.length === 0) {
+                container.innerHTML = `<div style="text-align:center; color:var(--text-muted); padding: 2rem;">${I18N[currentLang].noGames}</div>`;
+                return;
+            }
+
+            container.innerHTML = games.map(g => {
+                const farsiTag = g.features && g.features.farsi ? `<span class="tag-pill active">🌐 فارسی‌ساز</span>` : '';
+                const multiTag = g.features && g.features.multiplayer ? `<span class="tag-pill active">👥 چندنفره</span>` : '';
+                const lowTag = g.features && g.features.lowSpec ? `<span class="tag-pill active">💻 سیستم ضعیف</span>` : '';
+
+                return `
+                    <div class="dash-card">
+                        <div class="dash-card-header">
+                            <div>
+                                <h3 style="color:var(--accent); font-size: 1.2rem;">${escapeHtml(g.name)}</h3>
+                                <div style="font-size:0.85rem; color:var(--text-muted); margin-top:0.25rem;">
+                                    <span>${I18N[currentLang].platformPrefix} <strong>${escapeHtml(g.platform)}</strong></span> | 
+                                    <span>${I18N[currentLang].datePrefix} ${g.date}</span>
+                                </div>
+                            </div>
+                            <div>
+                                <span style="background:var(--badge-bg); color:var(--badge-text); border:1px solid var(--border); padding:0.3rem 0.8rem; border-radius:999px; font-weight:bold; font-size:0.85rem;">
+                                    ⭐ ${g.score}/10
+                                </span>
+                            </div>
+                        </div>
+                        <div style="margin-bottom:0.75rem;">
+                            ${farsiTag} ${multiTag} ${lowTag}
+                        </div>
+                        <p style="background:var(--bg-input); padding:1rem; border-radius:var(--radius-sm); border:1px solid var(--border); font-size:0.95rem; margin-bottom:1rem;">
+                            ${escapeHtml(g.description)}
+                        </p>
+                        <div class="actions-bar">
+                            <button class="btn-action btn-danger" onclick="deleteGame('${g.id}')">🗑️ ${I18N[currentLang].btnDelete}</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function deleteGame(id) {
+            if (!confirm(I18N[currentLang].confirmDeleteGame)) return;
+            let games = JSON.parse(localStorage.getItem('admiral_games') || '[]');
+            games = games.filter(g => g.id !== id);
+            localStorage.setItem('admiral_games', JSON.stringify(games));
+            renderGames();
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            applyTheme(currentTheme);
+            applyLanguage(currentLang);
+            checkAuth();
+        });
+    </script>
+</body>
+</html>
