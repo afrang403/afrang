@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لابراتوار چاپ عکس آفرنگ | Afrang Photo Lab</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&family=Vazirmatn:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        amber: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        },
+                        darkBg: '#0b0f17',
+                    },
+                    fontFamily: {
+                        vazir: ['Vazirmatn', 'sans-serif'],
+                        jakarta: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0b0f17;
+            color: #f3f4f6;
+            font-family: 'Vazirmatn', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Glassmorphism Classes */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(245, 158, 11, 0.4);
+            box-shadow: 0 20px 40px -15px rgba(245, 158, 11, 0.2);
+        }
+
+        /* Ambient Lighting */
+        .glow-amber {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(245,158,11,0.15) 0%, rgba(0,0,0,0) 70%);
+            pointer-events: none;
+        }
+
+        /* Animations */
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(3deg); }
+        }
+        @keyframes floatReverse {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(15px) rotate(-3deg); }
+        }
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 0.8; }
+        }
+
+        .animate-float-slow { animation: floatSlow 7s ease-in-out infinite; }
+        .animate-float-rev { animation: floatReverse 9s ease-in-out infinite; }
+        .animate-pulse-glow { animation: pulseGlow 4s ease-in-out infinite; }
+
+        /* English Mode Override */
+        [dir="ltr"] .font-fa-only { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+</head>
+<body class="selection:bg-amber-500 selection:text-black">
+
+    <!-- Background Ambient Light -->
+    <div class="glow-amber w-[600px] h-[600px] -top-40 -left-40 animate-pulse-glow"></div>
+    <div class="glow-amber w-[700px] h-[700px] top-[40%] -right-60 animate-pulse-glow"></div>
+    <div class="glow-amber w-[500px] h-[500px] bottom-10 left-10 animate-pulse-glow"></div>
+
+    <!-- Navigation Header -->
+    <header class="fixed top-5 inset-x-0 z-50 max-w-6xl mx-auto px-4">
+        <nav class="glass-panel rounded-full px-6 py-3 flex items-center justify-between">
+            <!-- Logo -->
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-amber-600 to-amber-400 flex items-center justify-center text-black font-black text-xl shadow-lg shadow-amber-500/20">
+                    <i class="fa-solid fa-camera"></i>
+                </div>
+                <span class="font-black text-xl tracking-wider text-white">آفرنگ <span class="text-amber-500 text-sm font-jakarta font-semibold">AFRANG</span></span>
+            </div>
+
+            <!-- Links -->
+            <ul class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-300">
+                <li><a href="#hero" class="hover:text-amber-400 transition-colors" data-fa="خانه" data-en="Home">خانه</a></li>
+                <li><a href="#process" class="hover:text-amber-400 transition-colors" data-fa="فرآیند چاپ" data-en="Process">فرآیند چاپ</a></li>
+                <li><a href="#portfolio" class="hover:text-amber-400 transition-colors" data-fa="نمونه کارها" data-en="Portfolio">نمونه کارها</a></li>
+                <li><a href="#about" class="hover:text-amber-400 transition-colors" data-fa="درباره ما" data-en="About">درباره ما</a></li>
+                <li><a href="#contact" class="hover:text-amber-400 transition-colors" data-fa="تماس با ما" data-en="Contact">تماس با ما</a></li>
+            </ul>
+
+            <!-- Language Switcher -->
+            <button id="langToggle" class="glass-card px-4 py-1.5 rounded-full text-xs font-jakarta font-bold text-amber-400 hover:bg-amber-500 hover:text-black transition-all flex items-center gap-2">
+                <i class="fa-solid fa-globe"></i>
+                <span id="langText">EN</span>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero" class="min-h-screen pt-36 pb-20 px-6 max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 relative">
+        <div class="lg:w-1/2 space-y-6 z-10">
+            <div class="inline-flex items-center gap-2 glass-panel px-4 py-2 rounded-full text-amber-400 text-xs font-semibold">
+                <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+                <span data-fa="لابراتوار تخصصی چاپ عکس و آلبوم" data-en="Professional Photo & Album Printing Lab">لابراتوار تخصصی چاپ عکس و آلبوم</span>
+            </div>
+            
+            <h1 class="text-4xl md:text-6xl font-black leading-tight text-white" data-fa="چاپ خاطرات شما در <span class='text-amber-500'>ابعاد آزاد</span> و کیفیت ماندگار" data-en="Printing Your Memories in <span class='text-amber-500'>Custom Dimensions</span>">
+                چاپ خاطرات شما در <span class="text-amber-500">ابعاد آزاد</span> و کیفیت ماندگار
+            </h1>
+            
+            <p class="text-gray-400 text-lg leading-relaxed" data-fa="لابراتوار عکس آفرنگ با بهره‌گیری از پیشرفته‌ترین تجهیزات نوربرداری و چاپ دیجیتال، امکان سفارش چاپ عکس در هر بعد و اندازه‌ی دلخواه را بدون هیچ محدودیتی فراهم آورده است." data-en="Afrang Photo Lab provides seamless custom-dimension photo printing using cutting-edge digital technology and high-end materials.">
+                لابراتوار عکس آفرنگ با بهره‌گیری از پیشرفته‌ترین تجهیزات نوربرداری و چاپ دیجیتال، امکان سفارش چاپ عکس در هر بعد و اندازه‌ی دلخواه را بدون هیچ محدودیتی فراهم آورده است.
+            </p>
+
+            <div class="flex flex-wrap gap-4 pt-4">
+                <a href="#contact" class="px-8 py-4 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-black font-bold rounded-2xl shadow-xl shadow-amber-500/20 transition-all transform hover:-translate-y-1" data-fa="ثبت سفارش چاپ" data-en="Order Now">
+                    ثبت سفارش چاپ
+                </a>
+                <a href="#portfolio" class="px-8 py-4 glass-panel hover:bg-white/10 text-white font-semibold rounded-2xl transition-all" data-fa="مشاهده نمونه کارها" data-en="View Gallery">
+                    مشاهده نمونه کارها
+                </a>
+            </div>
+        </div>
+
+        <!-- 3D Glass Floating Visual Center -->
+        <div class="lg:w-1/2 relative w-full h-[450px] flex items-center justify-center">
+            <div class="w-72 h-72 rounded-3xl glass-panel relative z-10 flex items-center justify-center p-6 border-amber-500/30 transform rotate-3 animate-float-slow">
+                <div class="text-center space-y-4">
+                    <div class="w-20 h-20 mx-auto rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 text-3xl">
+                        <i class="fa-solid fa-expand"></i>
+                    </div>
+                    <h3 class="font-bold text-xl" data-fa="ابعاد آزاد" data-en="Custom Sizes">ابعاد آزاد</h3>
+                    <p class="text-xs text-gray-400" data-fa="از کوچکترین سایز تا بنرهای بزرگ دیواری" data-en="From mini prints to grand wall display sizes">از کوچکترین سایز تا بنرهای بزرگ دیواری</p>
+                </div>
+            </div>
+
+            <!-- Floating 3D Elements Mockup -->
+            <div class="absolute -top-6 left-10 w-44 h-44 glass-card rounded-2xl p-4 flex flex-col justify-between animate-float-rev border-white/10 z-20">
+                <i class="fa-solid fa-camera-retro text-3xl text-amber-400"></i>
+                <div>
+                    <p class="text-xs font-bold" data-fa="دقت رنگ فوق‌العاده" data-en="Color Precision">دقت رنگ فوق‌العاده</p>
+                    <p class="text-[10px] text-gray-400">Lab Grade Quality</p>
+                </div>
+            </div>
+
+            <div class="absolute -bottom-8 right-8 w-52 h-36 glass-card rounded-2xl p-4 flex flex-col justify-between animate-float-slow z-20">
+                <i class="fa-solid fa-layer-group text-3xl text-amber-500"></i>
+                <div>
+                    <p class="text-xs font-bold" data-fa="کاغذهای عکاسی متوع" data-en="Various Papers">کاغذهای عکاسی متنوع</p>
+                    <p class="text-[10px] text-gray-400">Lustre, Glossy, Canvas</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section ("From Lens to Frame") -->
+    <section id="process" class="py-24 px-6 max-w-7xl mx-auto relative">
+        <div class="text-center max-w-2xl mx-auto mb-16 space-y-4">
+            <h2 class="text-3xl md:text-4xl font-black text-amber-500" data-fa="از لنز دوربین تا قاب تصویر" data-en="From Lens to Frame">از لنز دوربین تا قاب تصویر</h2>
+            <p class="text-gray-400" data-fa="مراحل ساخت و چاپ یک اثر ماندگار در لابراتوار آفرنگ" data-en="The workflow of turning moments into timeless physical prints">مراحل ساخت و چاپ یک اثر ماندگار در لابراتوار آفرنگ</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <!-- Step 1 -->
+            <div class="glass-card rounded-3xl p-6 relative overflow-hidden group">
+                <div class="text-5xl font-black text-white/5 absolute -left-2 -top-2 font-jakarta">01</div>
+                <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center mb-6 text-xl">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                </div>
+                <h3 class="font-bold text-lg mb-2" data-fa="۱. دریافت فایل" data-en="1. File Upload">۱. دریافت فایل</h3>
+                <p class="text-sm text-gray-400" data-fa="ارسال فایل با کیفیت بالا از طریق پیام‌رسان‌ها یا مراجعه حضوری." data-en="Send your high-res files via Rubika, Telegram, Eitaa, or visit in person.">ارسال فایل با کیفیت بالا از طریق پیام‌رسان‌ها یا مراجعه حضوری.</p>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="glass-card rounded-3xl p-6 relative overflow-hidden group">
+                <div class="text-5xl font-black text-white/5 absolute -left-2 -top-2 font-jakarta">02</div>
+                <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center mb-6 text-xl">
+                    <i class="fa-solid fa-sliders"></i>
+                </div>
+                <h3 class="font-bold text-lg mb-2" data-fa="۲. اصلاح رنگ و رتوش" data-en="2. Color Grading">۲. اصلاح رنگ و رتوش</h3>
+                <p class="text-sm text-gray-400" data-fa="تنزیمات رنگ تخصصی مانیتور و رتوش حرفه‌ای توسط متخصصان آفرنگ." data-en="Color calibration and specialized retouching by expert lab technicians.">تنظیمات رنگ تخصصی مانیتور و رتوش حرفه‌ای توسط متخصصان آفرنگ.</p>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="glass-card rounded-3xl p-6 relative overflow-hidden group">
+                <div class="text-5xl font-black text-white/5 absolute -left-2 -top-2 font-jakarta">03</div>
+                <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center mb-6 text-xl">
+                    <i class="fa-solid fa-print"></i>
+                </div>
+                <h3 class="font-bold text-lg mb-2" data-fa="۳. چاپ شیمیایی/دیجیتال" data-en="3. Master Printing">۳. چاپ شیمیایی/دیجیتال</h3>
+                <p class="text-sm text-gray-400" data-fa="چاپ روی کاغذهای عکاسی اصلی با دوام چند دهه‌ای و ماندگاری کامل." data-en="High-precision chemical & digital printing on premium archival photo paper.">چاپ روی کاغذهای عکاسی اصلی با دوام چند دهه‌ای و ماندگاری کامل.</p>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="glass-card rounded-3xl p-6 relative overflow-hidden group">
+                <div class="text-5xl font-black text-white/5 absolute -left-2 -top-2 font-jakarta">04</div>
+                <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center mb-6 text-xl">
+                    <i class="fa-solid fa-box-archive"></i>
+                </div>
+                <h3 class="font-bold text-lg mb-2" data-fa="۴. صحافی و تحویل" data-en="4. Binding & Delivery">۴. صحافی و تحویل</h3>
+                <p class="text-sm text-gray-400" data-fa="صحافی آلبوم‌های دیجیتال، شاسی‌کشی و بسته‌بندی ایمن جهت تحویل." data-en="Album binding, board mounting, and protective packaging ready for delivery.">صحافی آلبوم‌های دیجیتال، شاسی‌کشی و بسته‌بندی ایمن جهت تحویل.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="py-24 px-6 max-w-7xl mx-auto">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-4">
+            <div>
+                <h2 class="text-3xl md:text-4xl font-black text-white" data-fa="نمونه کارهای لابراتوار" data-en="Our Portfolio">نمونه کارهای لابراتوار</h2>
+                <p class="text-gray-400 mt-2" data-fa="مجموعه‌ای از آلبوم‌ها و چاپ‌های تخصصی ما" data-en="A showcase of our premium album prints and projects">مجموعه‌ای از آلبوم‌ها و چاپ‌های تخصصی ما</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Gallery Item 1 -->
+            <div class="glass-card rounded-3xl overflow-hidden group">
+                <div class="h-64 overflow-hidden relative">
+                    <img src="IMG_1057.jpeg" alt="آلبوم کودک" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-darkBg via-transparent to-transparent opacity-80"></div>
+                </div>
+                <div class="p-5">
+                    <span class="text-amber-400 text-xs font-semibold" data-fa="آلبوم تخصصی" data-en="Specialized Album">آلبوم تخصصی</span>
+                    <h3 class="font-bold text-lg text-white mt-1" data-fa="آلبوم کودک و نوزاد" data-en="Kids & Baby Album">آلبوم کودک و نوزاد</h3>
+                </div>
+            </div>
+
+            <!-- Gallery Item 2 -->
+            <div class="glass-card rounded-3xl overflow-hidden group">
+                <div class="h-64 overflow-hidden relative">
+                    <img src="IMG_1059.jpeg" alt="آلبوم عروس" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-darkBg via-transparent to-transparent opacity-80"></div>
+                </div>
+                <div class="p-5">
+                    <span class="text-amber-400 text-xs font-semibold" data-fa="آلبوم عروسی" data-en="Wedding Album">آلبوم عروسی</span>
+                    <h3 class="font-bold text-lg text-white mt-1" data-fa="آلبوم دیجیتال عروس و داماد" data-en="Bride & Groom Digital Album">آلبوم دیجیتال عروس و داماد</h3>
+                </div>
+            </div>
+
+            <!-- Gallery Item 3 -->
+            <div class="glass-card rounded-3xl overflow-hidden group">
+                <div class="h-64 overflow-hidden relative">
+                    <img src="IMG_1058.jpeg" alt="آلبوم اختصاصی" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-darkBg via-transparent to-transparent opacity-80"></div>
+                </div>
+                <div class="p-5">
+                    <span class="text-amber-400 text-xs font-semibold" data-fa="جلد جلدسازی و جلد چرم" data-en="Leather Covers">جلدسازی و جلد چرم</span>
+                    <h3 class="font-bold text-lg text-white mt-1" data-fa="آلبوم‌های اختصاصی و لوکس" data-en="Luxury Custom Albums">آلبوم‌های اختصاصی و لوکس</h3>
+                </div>
+            </div>
+
+            <!-- Gallery Item 4 -->
+            <div class="glass-card rounded-3xl overflow-hidden group">
+                <div class="h-64 overflow-hidden relative">
+                    <img src="IMG_1060.jpeg" alt="چاپ صنعتی" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-darkBg via-transparent to-transparent opacity-80"></div>
+                </div>
+                <div class="p-5">
+                    <span class="text-amber-400 text-xs font-semibold" data-fa="چاپ صنعتی" data-en="Industrial Print">چاپ صنعتی</span>
+                    <h3 class="font-bold text-lg text-white mt-1" data-fa="چاپ کاتالوگ و عکس‌های تبلیغاتی" data-en="Commercial & Studio Prints">چاپ کاتالوگ و عکس‌های تبلیغاتی</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="about" class="py-24 px-6 max-w-7xl mx-auto">
+        <div class="glass-panel rounded-3xl p-8 md:p-12 relative overflow-hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6">
+                    <div class="inline-flex items-center gap-2 text-amber-400 font-semibold text-sm">
+                        <i class="fa-solid fa-award"></i>
+                        <span data-fa="تجربه و کیفیت بی‌رقیب" data-en="Unmatched Quality & Experience">تجربه و کیفیت بی‌رقیب</span>
+                    </div>
+                    <h2 class="text-3xl md:text-4xl font-black text-white" data-fa="درباره لابراتوار عکس آفرنگ" data-en="About Afrang Photo Lab">درباره لابراتوار عکس آفرنگ</h2>
+                    <p class="text-gray-300 leading-relaxed" data-fa="لابراتوار آفرنگ با سال‌ها تجربه در صنعت چاپ عکس و ساخت آلبوم‌های دیجیتال، همواره تلاش کرده تا بالاترین استاندارد کیفیت رنگ، کاغذ و صحافی را ارائه دهد. ما با بهره‌گیری از دستگاه‌های پیشرفته و کادر متخصص، پاسخگوی تمام نیازهای عکاسان حرفه‌ای و عموم مشتریان عزیز هستیم." data-en="Afrang Photo Lab brings years of excellence in professional photo printing and luxury album craftmanship. Combining modern printing technologies with skilled specialists, we fulfill top-grade standards for studios and individual clients alike.">
+                        لابراتوار آفرنگ با سال‌ها تجربه در صنعت چاپ عکس و ساخت آلبوم‌های دیجیتال، همواره تلاش کرده تا بالاترین استاندارد کیفیت رنگ، کاغذ و صحافی را ارائه دهد. ما با بهره‌گیری از دستگاه‌های پیشرفته و کادر متخصص، پاسخگوی تمام نیازهای عکاسان حرفه‌ای و عموم مشتریان عزیز هستیم.
+                    </p>
+                    
+                    <div class="grid grid-cols-2 gap-4 pt-4">
+                        <div class="glass-card p-4 rounded-2xl">
+                            <div class="text-2xl font-black text-amber-400">100%</div>
+                            <div class="text-xs text-gray-400 mt-1" data-fa="ضمانت کیفیت ثبات رنگ" data-en="Color Lifetime Guarantee">ضمانت کیفیت ثبات رنگ</div>
+                        </div>
+                        <div class="glass-card p-4 rounded-2xl">
+                            <div class="text-2xl font-black text-amber-400" data-fa="ابعاد آزاد" data-en="Custom Sizes">ابعاد آزاد</div>
+                            <div class="text-xs text-gray-400 mt-1" data-fa="چاپ بدون محدودیت سایز" data-en="No Size Limitations">چاپ بدون محدودیت سایز</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Images Collage -->
+                <div class="grid grid-cols-2 gap-4">
+                    <img src="IMG_1084 (1).png" class="rounded-2xl w-full h-48 object-cover glass-card" alt="Afrang Equipment">
+                    <img src="IMG_1064 (1).jpeg" class="rounded-2xl w-full h-48 object-cover glass-card mt-6" alt="Afrang Workshop">
+                    <img src="IMG_1061.jpeg" class="rounded-2xl w-full h-48 object-cover glass-card col-span-2" alt="Afrang Lab Team">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 px-6 max-w-7xl mx-auto">
+        <div class="text-center max-w-2xl mx-auto mb-16">
+            <h2 class="text-3xl md:text-4xl font-black text-white" data-fa="راه ارتباطی و ثبت سفارش" data-en="Contact & Orders">راه ارتباطی و ثبت سفارش</h2>
+            <p class="text-gray-400 mt-2" data-fa="جهت مشاوره، استعلام قیمت یا ارسال فایل با ما در ارتباط باشید" data-en="Reach out to us for orders, price inquiries, or file uploads">جهت مشاوره، استعلام قیمت یا ارسال فایل با ما در ارتباط باشید</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Social Accounts -->
+            <div class="glass-card p-8 rounded-3xl text-center space-y-4">
+                <div class="w-16 h-16 rounded-2xl bg-amber-500/10 text-amber-400 flex items-center justify-center mx-auto text-2xl">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </div>
+                <h3 class="font-bold text-lg text-white" data-fa="ارسال فایل در پیام‌رسان‌ها" data-en="Send Files Online">ارسال فایل در پیام‌رسان‌ها</h3>
+                <p class="text-sm text-gray-400" data-fa="روبیکا / تلگرام / ایتا" data-en="Rubika / Telegram / Eitaa">روبیکا / تلگرام / ایتا</p>
+                <div class="pt-2">
+                    <span class="inline-block px-4 py-2 rounded-xl bg-white/5 font-mono text-amber-400 font-bold dir-ltr">@Afranglab</span>
+                </div>
+            </div>
+
+            <!-- Shop Phone -->
+            <div class="glass-card p-8 rounded-3xl text-center space-y-4">
+                <div class="w-16 h-16 rounded-2xl bg-amber-500/10 text-amber-400 flex items-center justify-center mx-auto text-2xl">
+                    <i class="fa-solid fa-phone"></i>
+                </div>
+                <h3 class="font-bold text-lg text-white" data-fa="تلفن مغازه" data-en="Shop Telephone">تلفن مغازه</h3>
+                <p class="text-sm text-gray-400" data-fa="پاسخگویی در ساعات کاری" data-en="Available in Working Hours">پاسخگویی در ساعات کاری</p>
+                <div class="pt-2">
+                    <a href="tel:03132312375" class="inline-block px-4 py-2 rounded-xl bg-white/5 font-mono text-amber-400 font-bold dir-ltr hover:bg-amber-500 hover:text-black transition-colors">031-32312375</a>
+                </div>
+            </div>
+
+            <!-- Management Contact -->
+            <div class="glass-card p-8 rounded-3xl text-center space-y-4">
+                <div class="w-16 h-16 rounded-2xl bg-amber-500/10 text-amber-400 flex items-center justify-center mx-auto text-2xl">
+                    <i class="fa-solid fa-user-tie"></i>
+                </div>
+                <h3 class="font-bold text-lg text-white" data-fa="مدیریت لابراتوار" data-en="Management Contacts">مدیریت لابراتوار</h3>
+                <div class="text-xs text-gray-300 space-y-2 pt-1">
+                    <p data-fa="علی اکبر تمیزی: <a href='tel:09133118039' class='text-amber-400 font-mono font-bold hover:underline'>09133118039</a>" data-en="Ali Akbar Tamizi: <a href='tel:09133118039' class='text-amber-400 font-mono font-bold hover:underline'>09133118039</a>">علی اکبر تمیزی: <a href="tel:09133118039" class="text-amber-400 font-mono font-bold">09133118039</a></p>
+                    <p data-fa="حسن جزایری: <a href='tel:09131088114' class='text-amber-400 font-mono font-bold hover:underline'>09131088114</a>" data-en="Hassan Jazayeri: <a href='tel:09131088114' class='text-amber-400 font-mono font-bold hover:underline'>09131088114</a>">حسن جزایری: <a href="tel:09131088114" class="text-amber-400 font-mono font-bold">09131088114</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 border-t border-white/10 text-center text-xs text-gray-500">
+        <p data-fa="تمامی حقوق برای لابراتوار چاپ عکس آفرنگ محفوظ است." data-en="© Afrang Photo Lab. All Rights Reserved.">تمامی حقوق برای لابراتوار چاپ عکس آفرنگ محفوظ است.</p>
+    </footer>
+
+    <!-- Multilingual Logic -->
+    <script>
+        let currentLang = 'fa';
+        const langBtn = document.getElementById('langToggle');
+        const langText = document.getElementById('langText');
+
+        langBtn.addEventListener('click', () => {
+            currentLang = currentLang === 'fa' ? 'en' : 'fa';
+            document.documentElement.lang = currentLang;
+            document.documentElement.dir = currentLang === 'fa' ? 'rtl' : 'ltr';
+            langText.textContent = currentLang === 'fa' ? 'EN' : 'FA';
+
+            document.querySelectorAll('[data-fa]').forEach(el => {
+                const faText = el.getAttribute('data-fa');
+                const enText = el.getAttribute('data-en');
+                if (currentLang === 'en' && enText) {
+                    el.innerHTML = enText;
+                } else if (currentLang === 'fa' && faText) {
+                    el.innerHTML = faText;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
